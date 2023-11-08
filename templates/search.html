@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Search Results</title>
+  </head>
+
+  <body>
+    <h1>Search results for: "{{query}}"</h1>
+
+    {% if definition %}
+    <p><strong>Definition : </strong> {{definition}}</p>
+
+    {% endif %}
+
+    <a href="{{ url_for('index') }}"> Back to home </a>
+  </body>
+</html>

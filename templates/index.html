@@ -1,0 +1,151 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8" />
+    <title>Home</title>
+
+    <style>
+      /* Add CSS styles here */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      form {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      strong {
+        color: #333;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 class="mt-4">Dictionary for Kotiria (Wanano)</h1>
+    <div class="container">
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <h2>Use the search bar below!</h2>
+
+          <form
+            id="search-form"
+            action="#"
+            onsubmit="searchWord(); return false;"
+          >
+            <div class="input-group">
+              <input
+                type="text"
+                id="search-query"
+                name="word"
+                class="form-control"
+                placeholder="Enter a word"
+                required
+              />
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">
+                  Search Word
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div id="search-results">
+            <!-- Search results will be displayed here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-3">
+          <h2>Add a word</h2>
+          <form method="POST" action="{{ url_for('add_word') }}">
+            <div class="form-group">
+              <label for="word">Word:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="word"
+                id="word"
+                placeholder="Enter a word"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="definition">Definition:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="definition"
+                id="definition"
+                placeholder="Enter a definition"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Word</button>
+          </form>
+        </div>
+
+        <div class="col-md-9">
+          <h2>Current word list</h2>
+          <ul class="list-group">
+            {% for word, definition in dictionary_data.items() %}
+            <li class="list-group-item">
+              <strong>{{ word }}</strong> : {{ definition }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  function searchWord() {
+    const query = document.getElementById("search-query").value;
+    const searchResults = document.getElementById("search-results");
+
+    // Make an AJAX request to the server to search for the word
+    fetch(`/search?query=${query}`)
+      .then((response) => response.text())
+      .then((data) => {
+        searchResults.innerHTML = data; // Update the search-results div with the search results
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+</script>
